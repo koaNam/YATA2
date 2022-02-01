@@ -127,3 +127,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+demo_producer/.idea/
+demo_producer/data/
+kafka2elastic/.idea/
+tfidf_tokenizer/.idea/
+volumes/elastic_data01/
+volumes/kafka_data01/
+volumes/connect_data/connect-jars/
