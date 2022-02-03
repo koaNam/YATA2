@@ -8,12 +8,15 @@ from gensim.corpora import Dictionary
 
 class ElasticCorpus:
 
-    def __init__(self, host, port, username, password, index, debug_limit=None):
-        self.elastic = Elasticsearch([{'host': host, 'port': port}], http_auth=(username, password))
-        self.index = index
-        self.debug_limit = debug_limit
+    def __init__(self, host=None, port=None, username=None, password=None, index=None, debug_limit=None,
+                 dictionary=Dictionary()):
+        if host:
+            self.elastic = Elasticsearch([{'host': host, 'port': port}], http_auth=(username, password))
+            self.index = index
+            self.debug_limit = debug_limit
+
         self.space = spacy.load('en_core_web_sm')
-        self.dictionary = Dictionary()
+        self.dictionary = dictionary
 
     def __get_document_count(self):
         return self.elastic.count(index=self.index, body={'query': {"match_all": {}}})["count"]

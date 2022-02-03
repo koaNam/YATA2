@@ -1,7 +1,11 @@
 import re
 
 import spacy
+from gensim.corpora import Dictionary
 from gensim.models import TfidfModel
+
+from pathlib import Path
+from ElasticCorpus import ElasticCorpus
 
 
 class TfIdfTokenizer:
@@ -15,7 +19,7 @@ class TfIdfTokenizer:
         self.corpus = corpus
         self.model = TfidfModel(corpus)
 
-    def tokens(self, input_text, value_count):
+    def transform(self, input_text, value_count):
         input_text = self.__preprocess_input(input_text)
 
         dictionary = self.corpus.dictionary
@@ -25,6 +29,16 @@ class TfIdfTokenizer:
         result.sort(key=lambda x: x[1], reverse=True)
 
         return result[:value_count]
+
+    def save_model(self, filepath):
+        Path(filepath).mkdir(parents=True, exist_ok=True)
+
+        self.model.save(f"{filepath}/model")
+        self.corpus.dictionary.save(f"{filepath}/dict")
+
+    def load_model(self, filepath):
+        self.model = TfidfModel.load(f"{filepath}/model")
+        self.corpus = ElasticCorpus(dictionary=Dictionary.load(f"{filepath}/dict"))
 
     def __preprocess_input(self, text):
         text = re.sub('[^A-Za-z0-9 ]+', '', text)
