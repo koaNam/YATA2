@@ -6,14 +6,15 @@ from gensim.models import TfidfModel
 
 from pathlib import Path
 from ElasticCorpus import ElasticCorpus
+from Tokenizer import Tokenizer
 
 
-class TfIdfTokenizer:
+class TfIdfTokenizer(Tokenizer):
 
-    def __init__(self):
+    def __init__(self, corpus=None, model=None):
         self.space = spacy.load('en_core_web_sm')
-        self.corpus = None
-        self.model = None
+        self.corpus = corpus
+        self.model = model
 
     def fit(self, corpus):
         self.corpus = corpus
