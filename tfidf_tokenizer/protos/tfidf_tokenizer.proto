@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package tokenizer;
+
+service Tokenizer {
+  rpc transform (TransformRequest) returns (TransformReply) {}
+}
+
+message TransformRequest {
+  string content = 1;
+  uint32 token_count = 2;
+}
+
+message TransformReply {
+  repeated string tokens = 1;
+}

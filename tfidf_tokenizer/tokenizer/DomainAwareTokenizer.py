@@ -4,8 +4,8 @@ from pathlib import Path
 
 from gensim.models import TfidfModel
 
-from ElasticCorpus import ElasticCorpus
-from TfIdfTokenizer import TfIdfTokenizer
+from corpus.ElasticCorpus import ElasticCorpus
+from tokenizer.TfIdfTokenizer import TfIdfTokenizer
 from Tokenizer import Tokenizer
 
 

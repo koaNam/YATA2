@@ -5,7 +5,7 @@ from gensim.corpora import Dictionary
 from gensim.models import TfidfModel
 
 from pathlib import Path
-from ElasticCorpus import ElasticCorpus
+from corpus.ElasticCorpus import ElasticCorpus
 from Tokenizer import Tokenizer
 
 

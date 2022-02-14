@@ -1,3 +1,4 @@
 spacy~=3.2.0
 elasticsearch~=7.16.3
 gensim~=4.1.2
+grpcio~=1.43.0
