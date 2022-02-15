@@ -38,7 +38,7 @@ class DomainAwareTokenizer(Tokenizer):
             recall_result[token] = default / (domain + default)
 
         result = list(recall_result.items())
-        return sorted(result, key=lambda x: x[1], reverse=True)
+        return sorted(result, key=lambda x: x[1], reverse=True)[:value_count]
 
     def save_model(self, filepath):
         Path(filepath).mkdir(parents=True, exist_ok=True)
