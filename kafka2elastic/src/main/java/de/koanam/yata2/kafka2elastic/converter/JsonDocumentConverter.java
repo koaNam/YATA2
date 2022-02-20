@@ -2,7 +2,6 @@ package de.koanam.yata2.kafka2elastic.converter;
 
 import com.google.common.hash.Hashing;
 import de.koanam.yata2.kafka2elastic.Document;
-import de.koanam.yata2.kafka2elastic.task.ElasticClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
