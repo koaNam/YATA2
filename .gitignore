@@ -134,3 +134,4 @@ tfidf_tokenizer/.idea/
 volumes/elastic_data01/
 volumes/kafka_data01/
 volumes/connect_data/connect-jars/
+tfidf_tokenizer/protos/*.py
