@@ -123,6 +123,20 @@ services:
       KAFKA_REST_SCHEMA_REGISTRY_URL: 'http://schema-registry:8081'
 
 
+  neo4j:
+    image: neo4j:4.4.4
+    hostname: neo4j
+    container_name: neo4j
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      - NEO4J_AUTH=neo4j/password
+    volumes:
+      - ./volumes/neo4j/plugins:/plugins
+      - ./volumes/neo4j/data:/data
+      - ./volumes/neo4j/import:/import
+
 
 networks:
   elk_yata2:
