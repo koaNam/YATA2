@@ -65,12 +65,33 @@ services:
       - ./volumes/kafka_data01:/tmp/kraft-combined-logs
     command: "bash -c 'if [ ! -f /tmp/update_run.sh ]; then echo \"ERROR: Did you forget the update_run.sh file that came with this docker-compose.yml file?\" && exit 1 ; else /tmp/update_run.sh && /etc/confluent/docker/run ; fi'"
 
+  init-kafka:
+    image: confluentinc/cp-kafka:6.1.1
+    container_name: init-kafka
+    depends_on:
+      - kafka_broker_01
+    entrypoint: [ '/bin/sh', '-c' ]
+    command: |
+      "
+      # blocks until kafka is reachable
+      
+      kafka-topics --bootstrap-server kafka_broker_01:29092 --list
+
+      echo -e 'Creating kafka topics'
+      kafka-topics --bootstrap-server kafka_broker_01:29092 --create --if-not-exists --topic whisky_review_topic --replication-factor 1 --partitions 3
+      kafka-topics --bootstrap-server kafka_broker_01:29092 --create --if-not-exists --topic whisky_review_token_topic --replication-factor 1 --partitions 3
+
+      echo -e 'Successfully created the following topics:'
+      kafka-topics --bootstrap-server kafka_broker_01:29092 --list
+      "
+
   schema-registry:
     image: confluentinc/cp-schema-registry:7.0.1
     hostname: schema-registry
     container_name: schema-registry
     depends_on:
       - kafka_broker_01
+      - init-kafka
     ports:
       - "8081:8081"
     environment:
@@ -85,6 +106,7 @@ services:
     depends_on:
       - kafka_broker_01
       - schema-registry
+      - init-kafka
     ports:
       - "8083:8083"
     environment:
@@ -106,12 +128,20 @@ services:
       CONNECT_LOG4J_LOGGERS: org.apache.zookeeper=ERROR,org.I0Itec.zkclient=ERROR,org.reflections=ERROR
     volumes:
       - ./volumes/connect_data:/data
+    command:
+      - /bin/bash
+      - -c 
+      - |
+        /etc/confluent/docker/run &
+        /bin/connect-standalone /data/config/worker.properties /data/config/elastic.properties /data/config/neo4j.properties
 
+ 
   rest-proxy:
     image: confluentinc/cp-kafka-rest:7.0.1
     depends_on:
       - kafka_broker_01
       - schema-registry
+      - init-kafka
     ports:
       - 8082:8082
     hostname: rest-proxy

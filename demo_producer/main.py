@@ -33,6 +33,6 @@ if __name__ == '__main__':
         for doc in chunk.iterrows():
             document = doc[1]
             data = remove_whitespace(document.to_json())
-            producer.produce("connect-test_domain_2", key=document.title, value=data, callback=acked)
+            producer.produce("whisky_review_topic", key=document.title, value=data, callback=acked)
 
     producer.flush()
